@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-export default ({ options, selected, onSelectedChange }) => {
+export default ({ label, options, selected, onSelectedChange }) => {
     const [openState, setOpenState] = useState(false)
 
     const formRef = useRef()
@@ -9,10 +9,10 @@ export default ({ options, selected, onSelectedChange }) => {
         const onBodyClick = (event) => {
             if (!formRef.current.contains(event.target)) { setOpenState(false) }
         }
-        document.body.addEventListener ('click', onBodyClick)
+        document.body.addEventListener ('click', onBodyClick, {capture: true})
 
         return () => {
-            document.body.removeEventListener('click', onBodyClick)
+            document.body.removeEventListener('click', onBodyClick, {capture: true})
         }
     }, [])
 
@@ -26,7 +26,7 @@ export default ({ options, selected, onSelectedChange }) => {
         <div>
             <div ref={formRef} className="ui form">
                 <div className="field">
-                    <label className="label">Select Color</label>
+                    <label className="label">Select a {label}</label>
                     <div onClick={() => setOpenState(!openState)} className={`ui selection dropdown ${openState ? 'visible active' : ''}`}>
                         <i className="dropdown icon"></i>
                         <div className="text">{selected.label}</div>
